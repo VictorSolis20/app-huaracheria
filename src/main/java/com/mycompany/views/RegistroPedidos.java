@@ -1,0 +1,767 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mycompany.views;
+
+import com.mycompany.huaracheriamx.DAOClienteImpl;
+import com.mycompany.huaracheriamx.DAODetallePedidoImpl;
+import com.mycompany.huaracheriamx.DAODomicilioClienteImpl;
+import com.mycompany.huaracheriamx.DAOPedidoImpl;
+import com.mycompany.huaracheriamx.MenuPrincipal;
+import com.mycompany.interfaces.DAOCliente;
+import com.mycompany.interfaces.DAODetallePedido;
+import com.mycompany.interfaces.DAODomicilioCliente;
+import com.mycompany.interfaces.DAOPedido;
+import com.mycompany.models.DetallePedido;
+import com.mycompany.models.Pedido;
+import com.mycompany.utils.Utils;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Victor
+ */
+public class RegistroPedidos extends javax.swing.JPanel {
+
+    private int idClienteSeleccionado = 0;
+    private int idDomicilioSeleccionado = 0;
+    private int ultimoIdPedido;
+
+    /**
+     * Creates new form MuestraClientes
+     */
+    public RegistroPedidos() {
+        initComponents();
+        InitStyles();
+        LoadRegistroPedidos();
+    }
+
+    private void InitStyles() {
+        clienteSearchTxt.putClientProperty("JTextField.placeholderText", "Ingrese el nombre del cliente a buscar");
+    }
+
+    //Método para mostrar los registros en la tabla de la interfaz gráfica
+    private void LoadRegistroPedidos() {
+        try {
+            DAOCliente dao = new DAOClienteImpl();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            dao.listar("").forEach((c) -> model.addRow(new Object[]{c.getIdCliente(), c.getNombre(), c.getApaterno(), c.getAmaterno()}));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Se muestra el listado de los nombres de los modelos de tejido en el comboBox
+        try {
+            DAOPedido dao = new DAOPedidoImpl();
+            List<Pedido> orders = dao.listarNombresModeloTejido();
+            List<String> nombresModeloTejido = new ArrayList<>();
+
+            for (Pedido order : orders) {
+                String nombreModelo = order.getListaNombresModeloTejido();
+                nombresModeloTejido.add(nombreModelo);
+            }
+
+            for (String nombre : nombresModeloTejido) {
+                modTejidoComboBox.addItem(nombre);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Se muestra el listado de los nombres del tipo de material en el comboBox
+        try {
+            DAOPedido dao = new DAOPedidoImpl();
+            List<Pedido> orders = dao.listarNombresTipoMaterial();
+            List<String> nombresTipoMaterial = new ArrayList<>();
+
+            for (Pedido order : orders) {
+                String nombreTipoMaterial = order.getListaNombresTipoMaterial();
+                nombresTipoMaterial.add(nombreTipoMaterial);
+            }
+
+            for (String nombre : nombresTipoMaterial) {
+                tipoMaterialComboBox.addItem(nombre);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Se muestra el listado de los nombres del tipo de suela en el comboBox
+        try {
+            DAOPedido dao = new DAOPedidoImpl();
+            List<Pedido> orders = dao.listarNombresTipoSuela();
+            List<String> nombresTipoSuela = new ArrayList<>();
+
+            for (Pedido order : orders) {
+                String nombreTipoSuela = order.getListaNombresTipoSuela();
+                nombresTipoSuela.add(nombreTipoSuela);
+            }
+
+            for (String nombre : nombresTipoSuela) {
+                tipoSuelaComboBox.addItem(nombre);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Se muestra el listado de los nombres del color o textura en el comboBox
+        try {
+            DAOPedido dao = new DAOPedidoImpl();
+            List<Pedido> orders = dao.listarNombresColorTextura();
+            List<String> nombresColorTextura = new ArrayList<>();
+
+            for (Pedido order : orders) {
+                String nombreColorTextura = order.getListaNombresColorTextura();
+                nombresColorTextura.add(nombreColorTextura);
+            }
+
+            for (String nombre : nombresColorTextura) {
+                colorTexturaComboBox.addItem(nombre);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        domicilioLbl = new javax.swing.JLabel();
+        clienteSearchTxt = new javax.swing.JTextField();
+        buscarBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        finalizarBtn = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        clienteLbl = new javax.swing.JLabel();
+        domicilioLbl1 = new javax.swing.JLabel();
+        modeloTejidoLbl = new javax.swing.JLabel();
+        modTejidoComboBox = new javax.swing.JComboBox<>();
+        colorTexturaLbl = new javax.swing.JLabel();
+        colorTexturaComboBox = new javax.swing.JComboBox<>();
+        tipoMaterialLbl = new javax.swing.JLabel();
+        tipoMaterialComboBox = new javax.swing.JComboBox<>();
+        tipoSuelaLbl = new javax.swing.JLabel();
+        tipoSuelaComboBox = new javax.swing.JComboBox<>();
+        numeroHuarachesLbl = new javax.swing.JLabel();
+        numeroHuarachesComboBox = new javax.swing.JComboBox<>();
+        numeroHuarachesLbl2 = new javax.swing.JLabel();
+        cantidadHuarachesLbl = new javax.swing.JLabel();
+        cantidadHuarachesTxt = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        agregarBtn = new javax.swing.JButton();
+        eliminarBtn = new javax.swing.JButton();
+        historialPedidosBtn = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(790, 590));
+        setPreferredSize(new java.awt.Dimension(790, 590));
+
+        domicilioLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        domicilioLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        domicilioLbl.setText("Seleccione las características del huarache");
+
+        clienteSearchTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        clienteSearchTxt.setPreferredSize(new java.awt.Dimension(6, 20));
+
+        buscarBtn.setBackground(new java.awt.Color(18, 90, 173));
+        buscarBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        buscarBtn.setForeground(new java.awt.Color(255, 255, 255));
+        buscarBtn.setText("Buscar");
+        buscarBtn.setBorderPainted(false);
+        buscarBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buscarBtn.setFocusPainted(false);
+        buscarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarBtnActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nombre", "Apellido Paterno", "Apellido Materno"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        finalizarBtn.setBackground(new java.awt.Color(51, 204, 255));
+        finalizarBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        finalizarBtn.setForeground(new java.awt.Color(255, 255, 255));
+        finalizarBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/enviar.png"))); // NOI18N
+        finalizarBtn.setText("Finalizar");
+        finalizarBtn.setBorderPainted(false);
+        finalizarBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        finalizarBtn.setFocusPainted(false);
+        finalizarBtn.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        finalizarBtn.setIconTextGap(15);
+        finalizarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                finalizarBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Registro de pedidos");
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Estado", "Municipio", "Colonia", "Calle", "Número exterior"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
+
+        clienteLbl.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        clienteLbl.setText("Clientes");
+
+        domicilioLbl1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        domicilioLbl1.setText("Domicilios del cliente");
+
+        modeloTejidoLbl.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        modeloTejidoLbl.setText("Modelo de tejido:");
+
+        modTejidoComboBox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        modTejidoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "          " }));
+
+        colorTexturaLbl.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        colorTexturaLbl.setText("Color o textura:");
+
+        colorTexturaComboBox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        colorTexturaComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "          " }));
+
+        tipoMaterialLbl.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        tipoMaterialLbl.setText("Tipo de material (Correa y planta)");
+
+        tipoMaterialComboBox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        tipoMaterialComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "          " }));
+
+        tipoSuelaLbl.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        tipoSuelaLbl.setText("Tipo de suela:");
+
+        tipoSuelaComboBox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        tipoSuelaComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "          " }));
+
+        numeroHuarachesLbl.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        numeroHuarachesLbl.setText("Número del par");
+
+        numeroHuarachesComboBox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        numeroHuarachesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "          ", "30", "29", "28", "27", "26", "25", "24", "23", "22", "21", "20", "19", "18", "17", "16", "14", "13", "12" }));
+
+        numeroHuarachesLbl2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        numeroHuarachesLbl2.setText("de huaraches:");
+
+        cantidadHuarachesLbl.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        cantidadHuarachesLbl.setText("Cantidad de pares:");
+
+        cantidadHuarachesTxt.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Número par de huaraches", "Modelo de tejido", "Color o textura", "Tipo de material", "Tipo de suela", "Cantidad de pares"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable3);
+
+        agregarBtn.setBackground(new java.awt.Color(51, 204, 0));
+        agregarBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        agregarBtn.setForeground(new java.awt.Color(255, 255, 255));
+        agregarBtn.setText("Agregar");
+        agregarBtn.setBorderPainted(false);
+        agregarBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        agregarBtn.setFocusPainted(false);
+        agregarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarBtnActionPerformed(evt);
+            }
+        });
+
+        eliminarBtn.setBackground(new java.awt.Color(255, 51, 51));
+        eliminarBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        eliminarBtn.setForeground(new java.awt.Color(255, 255, 255));
+        eliminarBtn.setText("Eliminar");
+        eliminarBtn.setBorderPainted(false);
+        eliminarBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        eliminarBtn.setFocusPainted(false);
+        eliminarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarBtnActionPerformed(evt);
+            }
+        });
+
+        historialPedidosBtn.setBackground(new java.awt.Color(153, 153, 153));
+        historialPedidosBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        historialPedidosBtn.setForeground(new java.awt.Color(255, 255, 255));
+        historialPedidosBtn.setText("Ver historial");
+        historialPedidosBtn.setBorderPainted(false);
+        historialPedidosBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        historialPedidosBtn.setFocusPainted(false);
+        historialPedidosBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                historialPedidosBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(281, 281, 281)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(42, 42, 42))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(clienteLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(289, 289, 289))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(clienteSearchTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buscarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))
+                        .addComponent(domicilioLbl1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(20, 20, 20)))
+                .addComponent(historialPedidosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(20, 20, 20))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(150, 150, 150)
+                .addComponent(domicilioLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(150, 150, 150))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(colorTexturaComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(52, 52, 52))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(numeroHuarachesComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(52, 52, 52))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(colorTexturaLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(2, 2, 2))
+                            .addComponent(numeroHuarachesLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(numeroHuarachesLbl2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(15, 15, 15)))
+                        .addGap(20, 20, 20)))
+                .addGap(50, 50, 50)
+                .addComponent(jScrollPane3)
+                .addGap(20, 20, 20))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cantidadHuarachesTxt)
+                        .addGap(1, 1, 1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(cantidadHuarachesLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(189, 189, 189)
+                .addComponent(agregarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(43, 43, 43)
+                .addComponent(eliminarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
+                .addComponent(finalizarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(30, 30, 30))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(modTejidoComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(47, 47, 47))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(modeloTejidoLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(119, 119, 119)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tipoMaterialComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tipoMaterialLbl))
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tipoSuelaLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tipoSuelaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(historialPedidosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addComponent(domicilioLbl1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(clienteLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(clienteSearchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buscarBtn))))))
+                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addComponent(domicilioLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(modeloTejidoLbl)
+                    .addComponent(tipoMaterialLbl)
+                    .addComponent(tipoSuelaLbl))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(modTejidoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tipoSuelaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tipoMaterialComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(colorTexturaLbl)
+                        .addGap(8, 8, 8)
+                        .addComponent(colorTexturaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(numeroHuarachesLbl)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(numeroHuarachesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(numeroHuarachesLbl2))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cantidadHuarachesLbl)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cantidadHuarachesTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(agregarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(eliminarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(finalizarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(10, 10, 10))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
+        try {
+            DAOCliente dao = new DAOClienteImpl();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            dao.listar(clienteSearchTxt.getText()).forEach((c) -> model.addRow(new Object[]{c.getIdCliente(), c.getNombre(), c.getApaterno(), c.getAmaterno()}));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_buscarBtnActionPerformed
+
+    private void finalizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalizarBtnActionPerformed
+        //Código mediante el cual se obtiene el formato de fecha
+        Date fechaActual = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaActualString = formato.format(fechaActual);
+        //Código mediante el cual se obtiene el formato de hora
+        Date horaActual = new Date();
+        SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+        String horaActualString = formatoHora.format(horaActual);
+
+        if (idClienteSeleccionado == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar el cliente del cual va a realizar el pedido. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        } else if (idDomicilioSeleccionado == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar el domicilio del cliente. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //Registro del pedido en la tabla "Pedido"
+        Pedido order = new Pedido();
+        order.setFechaRegistro(fechaActualString);
+        order.setHoraRegistro(horaActualString);
+        order.setIdCliente(idClienteSeleccionado);
+        order.setIdDomicilioCliente(idDomicilioSeleccionado);
+
+        try {
+            DAOPedido dao = new DAOPedidoImpl();
+            dao.registrar(order);
+            System.out.println("El registro del pedido se realizó exitosamente");
+            //Se le asigna a la variable el ID del pedido anteriormente realizado
+            ultimoIdPedido = dao.obtenerUltimoIdRegistrado();
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Ocurrió un error al realizar el registro del pedido. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            System.out.println(e.getMessage());
+        }
+
+        //Registro del pedido en la tabla "DetallePedido"
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        for (int fila = 0; fila < model.getRowCount(); fila++) {
+            String numeroHuarches = (String) model.getValueAt(fila, 0);
+            String modeloTejido = (String) model.getValueAt(fila, 1);
+            String colorTextura = (String) model.getValueAt(fila, 2);
+            String tipoMaterial = (String) model.getValueAt(fila, 3);
+            String tipoSuela = (String) model.getValueAt(fila, 4);
+            String cantidadPares = (String) model.getValueAt(fila, 5);
+
+            // Enviar los datos a la base de datos utilizando la misma idPedido para todos los productos
+            DetallePedido detailPedido = new DetallePedido();
+            detailPedido.setCantidadPares(Integer.parseInt(cantidadPares));
+            detailPedido.setModeloTejido(modeloTejido);
+            detailPedido.setColorTextura(colorTextura);
+            detailPedido.setTipoMaterial(tipoMaterial);
+            detailPedido.setTipoSuela(tipoSuela);
+            detailPedido.setNumeroParHuarches(numeroHuarches);
+            detailPedido.setIdPedido(ultimoIdPedido);
+
+            try {
+                DAODetallePedido dao = new DAODetallePedidoImpl();
+                dao.registrar(detailPedido);
+            } catch (Exception e) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Ocurrió un error al realizar el registro del detalle del pedido. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+                System.out.println(e.getMessage());
+            }
+        }
+        javax.swing.JOptionPane.showMessageDialog(this, "¡El registro del pedido se realizó exitosamente! \n", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        model.setRowCount(0);
+    }//GEN-LAST:event_finalizarBtnActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (jTable1.getSelectedRow() > -1) {
+            int clienteSeleccionadoId = (int) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+            //Se le asigna a la variable el valor del ID del cliente seleccionado
+            idClienteSeleccionado = clienteSeleccionadoId;
+            //Se muestra el listado de los registros de los domicilios del cliente seleccionado
+            try {
+                DAODomicilioCliente dao = new DAODomicilioClienteImpl();
+                DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+                model.setRowCount(0);
+                dao.listar(clienteSeleccionadoId).forEach((d) -> model.addRow(new Object[]{d.getIdDomicilioCliente(), d.getEstado(), d.getMunicipio(), d.getColonia(), d.getCalle(), d.getNumeroExterior()}));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar el cliente del cual va a consultar sus domicilios. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        if (jTable2.getSelectedRow() > -1) {
+            int domicilioSeleccionadoId = (int) jTable2.getValueAt(jTable2.getSelectedRow(), 0);
+            //Se le asigna a la variable el valor del ID del domicilio del cliente seleccionado
+            idDomicilioSeleccionado = domicilioSeleccionadoId;
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar el domicilio del cliente. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void agregarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarBtnActionPerformed
+
+        //Se obtiene el valor seleccionado del comboBox de la interfaz grafica
+        String valorModeloTejido = (String) modTejidoComboBox.getSelectedItem();
+        String valorTipoMaterial = (String) tipoMaterialComboBox.getSelectedItem();
+        String valorTipoSuela = (String) tipoSuelaComboBox.getSelectedItem();
+        String valorColorTextura = (String) colorTexturaComboBox.getSelectedItem();
+        String valorNumeroHuaraches = (String) numeroHuarachesComboBox.getSelectedItem();
+        //Se obtiene la cantidad de pares de huraches ingresada
+        String cantidadPares = cantidadHuarachesTxt.getText();
+
+        //Validaciones para los campos
+        // Se pone el nombre de la variable y con la función isEmpty() se evalua si esta vacia
+        if (cantidadPares.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe de ingresar la cantidad de pares de huaraches. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            // Posiciona el cursor en el campo cantidad de huaraches
+            cantidadHuarachesTxt.requestFocus();
+            return;
+        } else if (!Utils.isNumeric(cantidadPares)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "El campo cantidad de pares de huaraches debe contener números enteros. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            cantidadHuarachesTxt.requestFocus();
+            return;
+        } else if (Integer.parseInt(cantidadPares) <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "La cantidad de pares de huaraches debe ser mayor que 0. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            cantidadHuarachesTxt.requestFocus();
+            return;
+        } else if (valorModeloTejido == "          ") {
+            javax.swing.JOptionPane.showMessageDialog(this, "No ha seleccionado ninguna opción en el apartado modelo de tejido. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            modTejidoComboBox.requestFocus();
+            return;
+        } else if (valorTipoMaterial == "          ") {
+            javax.swing.JOptionPane.showMessageDialog(this, "No ha seleccionado ninguna opción en el apartado tipo de material. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            tipoMaterialComboBox.requestFocus();
+            return;
+        } else if (valorTipoSuela == "          ") {
+            javax.swing.JOptionPane.showMessageDialog(this, "No ha seleccionado ninguna opción en el apartado tipo de suela. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            tipoSuelaComboBox.requestFocus();
+            return;
+        } else if (valorColorTextura == "          ") {
+            javax.swing.JOptionPane.showMessageDialog(this, "No ha seleccionado ninguna opción en el apartado color o textura. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            colorTexturaComboBox.requestFocus();
+            return;
+        } else if (valorNumeroHuaraches == "          ") {
+            javax.swing.JOptionPane.showMessageDialog(this, "No ha seleccionado ninguna opción en el apartado número del par de huaraches. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            numeroHuarachesComboBox.requestFocus();
+            return;
+        }
+
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        // Agregar los detalles del producto a la tabla
+        Vector<Object> rowData = new Vector<>();
+        rowData.add(valorNumeroHuaraches);
+        rowData.add(valorModeloTejido);
+        rowData.add(valorColorTextura);
+        rowData.add(valorTipoMaterial);
+        rowData.add(valorTipoSuela);
+        rowData.add(cantidadPares);
+        model.addRow(rowData);
+
+    }//GEN-LAST:event_agregarBtnActionPerformed
+
+    private void eliminarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarBtnActionPerformed
+        if (jTable3.getSelectedRow() > -1) {
+            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            // Eliminar la fila seleccionada
+            model.removeRow(jTable3.getSelectedRow());
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "En la tabla de la lista del pedido debe seleccionar la fila del registro a eliminar. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_eliminarBtnActionPerformed
+
+    private void historialPedidosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historialPedidosBtnActionPerformed
+        MenuPrincipal.ShowJPanel(new MuestraPedidos());
+    }//GEN-LAST:event_historialPedidosBtnActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton agregarBtn;
+    private javax.swing.JButton buscarBtn;
+    private javax.swing.JLabel cantidadHuarachesLbl;
+    private javax.swing.JTextField cantidadHuarachesTxt;
+    private javax.swing.JLabel clienteLbl;
+    private javax.swing.JTextField clienteSearchTxt;
+    private javax.swing.JComboBox<String> colorTexturaComboBox;
+    private javax.swing.JLabel colorTexturaLbl;
+    private javax.swing.JLabel domicilioLbl;
+    private javax.swing.JLabel domicilioLbl1;
+    private javax.swing.JButton eliminarBtn;
+    private javax.swing.JButton finalizarBtn;
+    private javax.swing.JButton historialPedidosBtn;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
+    private javax.swing.JComboBox<String> modTejidoComboBox;
+    private javax.swing.JLabel modeloTejidoLbl;
+    private javax.swing.JComboBox<String> numeroHuarachesComboBox;
+    private javax.swing.JLabel numeroHuarachesLbl;
+    private javax.swing.JLabel numeroHuarachesLbl2;
+    private javax.swing.JComboBox<String> tipoMaterialComboBox;
+    private javax.swing.JLabel tipoMaterialLbl;
+    private javax.swing.JComboBox<String> tipoSuelaComboBox;
+    private javax.swing.JLabel tipoSuelaLbl;
+    // End of variables declaration//GEN-END:variables
+}

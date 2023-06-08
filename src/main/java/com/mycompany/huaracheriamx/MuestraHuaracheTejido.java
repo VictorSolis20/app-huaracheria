@@ -1,0 +1,496 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mycompany.huaracheriamx;
+
+import com.formdev.flatlaf.FlatLightLaf;
+import com.mycompany.interfaces.DAOHuaracheTejido;
+import com.mycompany.models.HuaracheTejido;
+import com.mycompany.models.ModeloTejido;
+import com.mycompany.utils.Utils;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Victor
+ */
+public class MuestraHuaracheTejido extends javax.swing.JFrame {
+
+    private int idModeloTejidoSeleccionado;
+    private float precioModeloTejidoSeleccionado;
+    private float totalPagoParesTejidos;
+    private int idPersonalIngresado;
+
+    /**
+     * Creates new form MuestraHuaracheTejido
+     */
+    public MuestraHuaracheTejido() {
+        initComponents();
+        LoadMuestraHuaracheTejido();
+        SetDate();
+        SetHora();
+        Bienvenida();
+    }
+
+    public MuestraHuaracheTejido(int idPersonal) {
+        initComponents();
+        idPersonalIngresado = idPersonal;
+        LoadMuestraHuaracheTejido();
+        SetDate();
+        SetHora();
+        Bienvenida();
+    }
+
+    private void LoadMuestraHuaracheTejido() {
+        //Se muestra el listado de los registros en la tabla
+        try {
+            DAOHuaracheTejido dao = new DAOHuaracheTejidoImpl();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            dao.listar(idPersonalIngresado).forEach((d) -> model.addRow(new Object[]{d.getIdHuaracheTejido(), d.getIdModeloTejido(), d.getCantidadHuarachesTejidos(), d.getFechaRegistro(), d.getTotalPago(), d.getStatus(), d.getObservaciones(), d.getIdPersonal()}));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Se limpia el comboBox
+        modeloTejidoComboBox.removeAllItems();
+        
+        //Se muestra el listado de los nombres de los modelos de tejido en el comboBox
+        try {
+            DAOHuaracheTejido dao = new DAOHuaracheTejidoImpl();
+            List<HuaracheTejido> huaraches = dao.listarNombresModeloTejido();
+            List<String> nombresModeloTejido = new ArrayList<>();
+
+            for (HuaracheTejido huarache : huaraches) {
+                String nombreModelo = huarache.getListaNombres();
+                nombresModeloTejido.add(nombreModelo);
+            }
+
+            for (String nombre : nombresModeloTejido) {
+                modeloTejidoComboBox.addItem(nombre);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //Método para obtener la fecha actual del sistema
+    private void SetDate() {
+        // Obtener la fecha actual
+        Date fechaActual = new Date();
+        // Crear un formato para la fecha
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        // Obtener la fecha formateada como un String
+        String fechaFormateada = formatoFecha.format(fechaActual);
+        // Mostrar la fecha en el JLabel
+        fechaLbl.setText(fechaFormateada);
+    }
+    
+    //Método para obtener la hora actual del sistema
+    private void SetHora() {
+        // Configurar la zona horaria de México
+        ZoneId zonaMexico = ZoneId.of("America/Mexico_City");
+
+        // Actualizar la hora cada segundo
+        Timer timer = new Timer(1000, e -> {
+            LocalTime horaActual = LocalTime.now(zonaMexico);
+            String horaFormateada = horaActual.format(DateTimeFormatter.ofPattern("hh:mm:ss a"));
+            horaLbl.setText(horaFormateada);
+        });
+        timer.start();
+    }
+    
+    //Método para mostrar el nombre el personal que ingreso
+    private void Bienvenida(){
+        String nombre = "";
+        String aPaterno = "";
+        String aMaterno = "";
+        try {
+            DAOHuaracheTejido dao = new DAOHuaracheTejidoImpl();
+            nombre = dao.obtenerNombrePersonalIngresado(idPersonalIngresado);
+            aPaterno = dao.obtenerApellidoPaternoTrabajador(idPersonalIngresado);
+            aMaterno = dao.obtenerApellidoMaternoTrabajador(idPersonalIngresado);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        bienvenidaLbl.setText("Bienvenid@, "+nombre+" "+aPaterno+" "+aMaterno);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        horaLbl = new javax.swing.JLabel();
+        bienvenidaLbl = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        fechaLbl = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        title = new javax.swing.JLabel();
+        nombreLbl = new javax.swing.JLabel();
+        observacionesTxt = new javax.swing.JTextField();
+        modeloTejidoComboBox = new javax.swing.JComboBox<>();
+        nombreLbl1 = new javax.swing.JLabel();
+        nombreLbl2 = new javax.swing.JLabel();
+        cantidadTejidoTxt = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        registrarBtn = new javax.swing.JButton();
+        verPrestamosBtn = new javax.swing.JButton();
+        salirBtn = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel2.setBackground(new java.awt.Color(19, 39, 142));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        horaLbl.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        horaLbl.setForeground(new java.awt.Color(255, 255, 255));
+        horaLbl.setText("Hora");
+        jPanel2.add(horaLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 40, -1, -1));
+
+        bienvenidaLbl.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        bienvenidaLbl.setForeground(new java.awt.Color(255, 255, 255));
+        bienvenidaLbl.setText("Bienvenido");
+        jPanel2.add(bienvenidaLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Fecha:");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 10, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Hora:");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 40, -1, -1));
+
+        fechaLbl.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        fechaLbl.setForeground(new java.awt.Color(255, 255, 255));
+        fechaLbl.setText("Fecha");
+        jPanel2.add(fechaLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 10, -1, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 70));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        title.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        title.setText("Registro de Huaraches Tejidos");
+        title.setPreferredSize(new java.awt.Dimension(215, 32));
+
+        nombreLbl.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        nombreLbl.setText("Observaciones");
+
+        observacionesTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        modeloTejidoComboBox.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        modeloTejidoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "          " }));
+        modeloTejidoComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modeloTejidoComboBoxActionPerformed(evt);
+            }
+        });
+
+        nombreLbl1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        nombreLbl1.setText("Seleccione el modelo de tejido:");
+
+        nombreLbl2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        nombreLbl2.setText("Cantidad de huaraches tejidos:");
+
+        cantidadTejidoTxt.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "ID_Modelo_de_tejido", "Cantidad de Huaraches Tejidos", "Fecha de registro", "Pago total", "Status", "Observaciones", "ID_Personal"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        registrarBtn.setBackground(new java.awt.Color(18, 90, 173));
+        registrarBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        registrarBtn.setForeground(new java.awt.Color(255, 255, 255));
+        registrarBtn.setText("Registrar");
+        registrarBtn.setBorderPainted(false);
+        registrarBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        registrarBtn.setFocusPainted(false);
+        registrarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarBtnActionPerformed(evt);
+            }
+        });
+
+        verPrestamosBtn.setBackground(new java.awt.Color(153, 153, 153));
+        verPrestamosBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        verPrestamosBtn.setForeground(new java.awt.Color(255, 255, 255));
+        verPrestamosBtn.setText("Ver prestamos");
+        verPrestamosBtn.setBorderPainted(false);
+        verPrestamosBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        verPrestamosBtn.setFocusPainted(false);
+        verPrestamosBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verPrestamosBtnActionPerformed(evt);
+            }
+        });
+
+        salirBtn.setBackground(new java.awt.Color(255, 51, 51));
+        salirBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        salirBtn.setForeground(new java.awt.Color(255, 255, 255));
+        salirBtn.setText("Salir");
+        salirBtn.setBorderPainted(false);
+        salirBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        salirBtn.setFocusPainted(false);
+        salirBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(9, 9, 9))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(nombreLbl1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(modeloTejidoComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(19, 19, 19))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(nombreLbl2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(19, 19, 19))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(cantidadTejidoTxt)
+                        .addGap(79, 79, 79))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(nombreLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(69, 69, 69))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(observacionesTxt)
+                        .addGap(19, 19, 19)))
+                .addGap(101, 101, 101)
+                .addComponent(jScrollPane1)
+                .addGap(30, 30, 30))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(registrarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(230, 230, 230)
+                .addComponent(verPrestamosBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(100, 100, 100)
+                .addComponent(salirBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(100, 100, 100))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(nombreLbl1)
+                        .addGap(8, 8, 8)
+                        .addComponent(modeloTejidoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(nombreLbl2)
+                        .addGap(8, 8, 8)
+                        .addComponent(cantidadTejidoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(nombreLbl)
+                        .addGap(8, 8, 8)
+                        .addComponent(observacionesTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(registrarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(verPrestamosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(salirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35))
+        );
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1030, 400));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 470));
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void registrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarBtnActionPerformed
+
+        //Código mediante el cual se obtiene el formato de fecha
+        Date fechaActual = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaActualString = formato.format(fechaActual);
+
+        //Se obtiene el valor seleccionado del comboBox de la interfaz grafica
+        String valorSeleccionadoComboBox = (String) modeloTejidoComboBox.getSelectedItem();
+
+        //Se obtiene el ID y el precio del modelo de tejido seleccionado
+        try {
+            DAOHuaracheTejido dao = new DAOHuaracheTejidoImpl();
+            idModeloTejidoSeleccionado = dao.obtenerIdModeloTejido(valorSeleccionadoComboBox);
+            precioModeloTejidoSeleccionado = dao.obtenerPrecioModeloTejido(valorSeleccionadoComboBox);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Se extraen los datos ingresados por el usuario mediante la interfaz grafica
+        String cantidadHuaracheTejido = cantidadTejidoTxt.getText();
+        String observaciones = observacionesTxt.getText();
+
+        //Validaciones para los campos
+        // Se pone el nombre de la variable y con la función isEmpty() se evalua si esta vacia
+        if (cantidadHuaracheTejido.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe llenar todos los campos \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            // Posiciona el cursor en el campo nombre
+            cantidadTejidoTxt.requestFocus();
+            return;
+        } else if (valorSeleccionadoComboBox == "          ") {
+            javax.swing.JOptionPane.showMessageDialog(this, "No ha seleccionado ninguna opción en el apartado modelo de tejido. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            modeloTejidoComboBox.requestFocus();
+            return;
+        } else if (!Utils.isNumeric(cantidadHuaracheTejido)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "El campo cantidad de huaraches tejidos debe contener números enteros. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            cantidadTejidoTxt.requestFocus();
+            return;
+        }
+
+        //Se realizan las operaciones para calcular el pago de los huaraches tejidos
+        totalPagoParesTejidos = precioModeloTejidoSeleccionado * Integer.parseInt(cantidadHuaracheTejido);
+
+        HuaracheTejido huarTejido = new HuaracheTejido();
+        huarTejido.setCantidadHuarachesTejidos(Integer.parseInt(cantidadHuaracheTejido));
+        huarTejido.setObservaciones(observaciones);
+        huarTejido.setFechaRegistro(fechaActualString);
+        huarTejido.setIdPersonal(idPersonalIngresado);
+        huarTejido.setStatus("Pendiente");
+        huarTejido.setIdModeloTejido(idModeloTejidoSeleccionado);
+        huarTejido.setTotalPago(totalPagoParesTejidos);
+
+        try {
+            DAOHuaracheTejido dao = new DAOHuaracheTejidoImpl();
+            dao.registrar(huarTejido);
+
+            javax.swing.JOptionPane.showMessageDialog(this, "Registro de huaraches tejidos realizado exitosamente. \n", "AVISO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            //Se vuelve a cargar la tabla con el nuevo registro
+            LoadMuestraHuaracheTejido();
+            //Ya que se realizo el registro se limpian todas las cajas de texto
+            cantidadTejidoTxt.setText("");
+            observacionesTxt.setText("");
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Ocurrió un error al realizar el registro de los huaraches tejidos. \n", "AVISO", javax.swing.JOptionPane.ERROR_MESSAGE);
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_registrarBtnActionPerformed
+
+    private void verPrestamosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verPrestamosBtnActionPerformed
+        MuestraPrestamosPersonal prestamoPersonal = new MuestraPrestamosPersonal(idPersonalIngresado);
+        javax.swing.SwingUtilities.getWindowAncestor(getContentPane()).dispose();
+//        MuestraHuaracheTejido huaraTejido = new MuestraHuaracheTejido();
+        prestamoPersonal.setVisible(true);
+//        huaraTejido.setVisible(false);
+    }//GEN-LAST:event_verPrestamosBtnActionPerformed
+
+    private void modeloTejidoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modeloTejidoComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_modeloTejidoComboBoxActionPerformed
+
+    private void salirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirBtnActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_salirBtnActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        FlatLightLaf.setup();
+UIManager.put( "Button.arc", 999 );
+        UIManager.put( "TextComponent.arc", 999 );
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MuestraHuaracheTejido().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bienvenidaLbl;
+    private javax.swing.JTextField cantidadTejidoTxt;
+    private javax.swing.JLabel fechaLbl;
+    private javax.swing.JLabel horaLbl;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JComboBox<String> modeloTejidoComboBox;
+    private javax.swing.JLabel nombreLbl;
+    private javax.swing.JLabel nombreLbl1;
+    private javax.swing.JLabel nombreLbl2;
+    private javax.swing.JTextField observacionesTxt;
+    private javax.swing.JButton registrarBtn;
+    private javax.swing.JButton salirBtn;
+    private javax.swing.JLabel title;
+    private javax.swing.JButton verPrestamosBtn;
+    // End of variables declaration//GEN-END:variables
+}
